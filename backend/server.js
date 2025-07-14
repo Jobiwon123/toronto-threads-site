@@ -6,22 +6,17 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
-// ✅ Allow only your frontend Render URL
+// Allow requests from your frontend Render domain
 app.use(cors({
-  origin: 'https://toronto-threads-site.onrender.com'
+  origin: 'https://toronto-threads-site.onrender.com',
 }));
 
 app.use(express.json());
 
-// Serve static files (HTML, CSS, JS, images)
+// Serve static files if needed
 app.use(express.static(path.join(__dirname, '..')));
 
-// Serve main HTML file
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../toronto_clothing_store.html'));
-});
-
-// Stripe checkout route
+// Stripe Checkout route
 app.post('/create-checkout-session', async (req, res) => {
   const line_items = req.body.cart.map(item => ({
     price_data: {
@@ -50,4 +45,4 @@ app.post('/create-checkout-session', async (req, res) => {
 
 // Start server
 const PORT = process.env.PORT || 4242;
-app.listen(PORT, () => console.log(`✅ Server running at http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
