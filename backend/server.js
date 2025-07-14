@@ -5,31 +5,43 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
-// ✅ Enable CORS with preflight support
+// ✅ Enable CORS globally, including preflight requests
+const allowedOrigin = 'https://toronto-threads-site.onrender.com';
+
 app.use(cors({
-  origin: 'https://toronto-threads-site.onrender.com',
+  origin: allowedOrigin,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
+  credentials: true,
+}));
+
+// ✅ Explicitly handle preflight OPTIONS requests
+app.options('*', cors({
+  origin: allowedOrigin,
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
 }));
 
+// ✅ Parse incoming JSON
 app.use(express.json());
 
-// ✅ Add this health-check route so Render doesn't return 404
+// ✅ Health check route for Render
 app.get('/', (req, res) => {
   res.send('Backend is live!');
 });
 
+// ✅ Stripe checkout session route
 app.post('/create-checkout-session', async (req, res) => {
-  const line_items = req.body.cart.map(item => ({
-    price_data: {
-      currency: 'cad',
-      product_data: { name: item.product },
-      unit_amount: Math.round(item.price * 100),
-    },
-    quantity: 1,
-  }));
-
   try {
+    const line_items = req.body.cart.map(item => ({
+      price_data: {
+        currency: 'cad',
+        product_data: { name: item.product },
+        unit_amount: Math.round(item.price * 100),
+      },
+      quantity: 1,
+    }));
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items,
@@ -45,6 +57,6 @@ app.post('/create-checkout-session', async (req, res) => {
   }
 });
 
-// ✅ Start the server on Render’s dynamic port
+// ✅ Start server
 const port = process.env.PORT || 10000;
 app.listen(port, () => console.log(`✅ Backend running on port ${port}`));
