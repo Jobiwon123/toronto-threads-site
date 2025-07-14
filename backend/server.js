@@ -5,10 +5,15 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
-// Allow requests from your frontend Render domain
-app.use(cors({
-  origin: 'https://toronto-threads-site.onrender.com'
-}));
+// CORS configuration
+const corsOptions = {
+  origin: 'https://toronto-threads-site.onrender.com',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type']
+};
+
+app.use(cors(corsOptions));
+app.options('/create-checkout-session', cors(corsOptions)); // Preflight support
 
 app.use(express.json());
 
