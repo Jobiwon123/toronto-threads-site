@@ -5,13 +5,18 @@ const path = require('path');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
-app.use(cors());
+
+// ✅ Allow only your frontend Render URL
+app.use(cors({
+  origin: 'https://toronto-threads-site.onrender.com'
+}));
+
 app.use(express.json());
 
 // Serve static files (HTML, CSS, JS, images)
 app.use(express.static(path.join(__dirname, '..')));
 
-// Default route to serve your HTML page
+// Serve main HTML file
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../toronto_clothing_store.html'));
 });
@@ -32,8 +37,8 @@ app.post('/create-checkout-session', async (req, res) => {
       payment_method_types: ['card'],
       line_items,
       mode: 'payment',
-      success_url: 'http://localhost:4242/success.html',
-      cancel_url: 'http://localhost:4242/',
+      success_url: 'https://toronto-threads-site.onrender.com/success.html',
+      cancel_url: 'https://toronto-threads-site.onrender.com/',
     });
 
     res.json({ url: session.url });
@@ -44,4 +49,5 @@ app.post('/create-checkout-session', async (req, res) => {
 });
 
 // Start server
-app.listen(4242, () => console.log('✅ Server running at http://localhost:4242'));
+const PORT = process.env.PORT || 4242;
+app.listen(PORT, () => console.log(`✅ Server running at http://localhost:${PORT}`));
