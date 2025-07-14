@@ -5,17 +5,19 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
-// CORS configuration
-const corsOptions = {
+// Enable CORS for your frontend domain, including preflight support
+app.use(cors({
   origin: 'https://toronto-threads-site.onrender.com',
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type']
-};
-
-app.use(cors(corsOptions));
-app.options('/create-checkout-session', cors(corsOptions)); // Preflight support
+  allowedHeaders: ['Content-Type'],
+}));
 
 app.use(express.json());
+
+// Add a basic GET route to confirm the backend is live
+app.get('/', (req, res) => {
+  res.send('Backend is live.');
+});
 
 app.post('/create-checkout-session', async (req, res) => {
   const line_items = req.body.cart.map(item => ({
@@ -38,11 +40,4 @@ app.post('/create-checkout-session', async (req, res) => {
 
     res.json({ url: session.url });
   } catch (err) {
-    console.error('Stripe error:', err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Start the server on Render's default port
-const port = process.env.PORT || 10000;
-app.listen(port, () => console.log(`✅ Backend running on port ${port}`));
+    console.e
