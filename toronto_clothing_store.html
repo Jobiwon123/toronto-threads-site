@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toronto Threads | Secondhand Clothing Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: #fff;
+      color: #333;
+    }
+
+    header {
+      background: white;
+      color: #333;
+      padding: 10px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      height: 112px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 80px 20px;
+      background-image: url('images/toronto-skyline-bw.jpg');
+      background-size: cover;
+      background-position: center;
+      color: white;
+    }
+
+    .hero-text {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+    }
+
+    .btn {
+      background: #0a8754;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 4px;
+      text-decoration: none;
+      margin-top: 15px;
+      display: inline-block;
+    }
+
+    main {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .product {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      background: white;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .product:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .product img {
+      width: 100%;
+      display: block;
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product h3 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+    }
+
+    .product p {
+      margin: 0 0 10px;
+      font-weight: bold;
+    }
+
+    .about, .contact, .cart {
+      background-image: url('images/toronto-street-bw.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      color: #fff;
+      padding: 60px 30px;
+      margin-top: 60px;
+      border-radius: 10px;
+    }
+
+    form input, form textarea {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    footer {
+      background: #333;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="images/logo.png" alt="Toronto Threads Logo" class="logo">
+    <nav>
+      <ul>
+        <li><a href="#shop">Shop</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#cart">Cart (<span id="cart-count">0</span>)</a></li>
+      </ul>
+    </nav>
+    <nav>
+      <ul>
+        <li><a href="#jeans">Jeans</a></li>
+        <li><a href="#men">Men</a></li>
+        <li><a href="#women">Women</a></li>
+        <li><a href="#kids">Kids</a></li>
+        <li><a href="#handbags">Handbags</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h2>Curated Secondhand Finds</h2>
+      <p>Style with a story. Sustainably sourced in Toronto.</p>
+      <a href="#shop" class="btn">Shop Now</a>
+    </div>
+  </section>
+
+  <main>
+    <section id="shop" class="product-grid">
+      <div class="product">
+        <img src="images/jacket.jpg" alt="Vintage Jacket" />
+        <div class="product-info">
+          <h3>Vintage Jacket</h3>
+          <p>$40.00</p>
+          <button onclick="addToCart('Vintage Jacket', 40.00)">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="product">
+        <img src="images/dress.jpg" alt="Retro Dress" />
+        <div class="product-info">
+          <h3>Retro Dress</h3>
+          <p>$35.00</p>
+          <button onclick="addToCart('Retro Dress', 35.00)">Add to Cart</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <h2>About Us</h2>
+      <p>Born in the heart of Toronto, we handpick unique, stylish secondhand pieces that give fashion a second chance while reducing waste.</p>
+    </section>
+
+    <section id="contact" class="contact">
+      <h2>Contact Us</h2>
+      <form id="contact-form">
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="email" name="email" placeholder="Your Email" required />
+        <textarea name="message" placeholder="Message" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </section>
+
+    <section id="cart" class="cart">
+      <h2>Your Cart</h2>
+      <div id="cart-items"></div>
+      <p>Total: $<span id="cart-total">0.00</span></p>
+      <button id="checkout-btn">Checkout</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Toronto Threads. All rights reserved.</p>
+  </footer>
+
+  <script>
+    let cart = [];
+
+    function addToCart(product, price) {
+      cart.push({ product, price });
+      updateCart();
+    }
+
+    function updateCart() {
+      const cartItems = document.getElementById('cart-items');
+      const cartCount = document.getElementById('cart-count');
+      const cartTotal = document.getElementById('cart-total');
+
+      cartItems.innerHTML = '';
+      let total = 0;
+
+      cart.forEach((item) => {
+        total += item.price;
+        const div = document.createElement('div');
+        div.textContent = `${item.product} - $${item.price.toFixed(2)}`;
+        cartItems.appendChild(div);
+      });
+
+      cartCount.textContent = cart.length;
+      cartTotal.textContent = total.toFixed(2);
+    }
+
+    document.getElementById('checkout-btn').addEventListener('click', async () => {
+      if (cart.length === 0) return alert('Your cart is empty.');
+
+      const response = await fetch('/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cart })
+      });
+
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert('Checkout failed.');
+      }
+    });
+  </script>
+</body>
+</html>
