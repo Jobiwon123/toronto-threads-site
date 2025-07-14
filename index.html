@@ -258,7 +258,7 @@
     document.getElementById('checkout-btn').addEventListener('click', async () => {
       if (cart.length === 0) return alert('Your cart is empty.');
 
-      const response = await fetch('/create-checkout-session', {
+      const response = await fetch('https://toronto-threads-backend.onrender.com/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cart })
