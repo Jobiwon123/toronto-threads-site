@@ -5,24 +5,15 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
-// ✅ Enable CORS globally, including preflight requests
+// ✅ CORS configuration — clean and correct
 const allowedOrigin = 'https://toronto-threads-site.onrender.com';
 
 app.use(cors({
   origin: allowedOrigin,
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type'],
   credentials: true,
 }));
 
-// ✅ Explicitly handle preflight OPTIONS requests
-app.options('*', cors({
-  origin: allowedOrigin,
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type'],
-}));
-
-// ✅ Parse incoming JSON
+// ✅ JSON body parsing
 app.use(express.json());
 
 // ✅ Health check route for Render
