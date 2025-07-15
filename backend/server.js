@@ -5,11 +5,11 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
-// ✅ CORS configuration to allow frontend
-const allowedOrigin = 'https://toronto-threads-site-webservice.onrender.com';
+// ✅ Frontend URL (define once for both CORS + redirects)
+const frontendURL = 'https://toronto-threads-site.onrender.com';
 
 app.use(cors({
-  origin: allowedOrigin,
+  origin: frontendURL,
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
 }));
@@ -37,8 +37,8 @@ app.post('/create-checkout-session', async (req, res) => {
       payment_method_types: ['card'],
       line_items,
       mode: 'payment',
-      success_url: `${allowedOrigin}/success.html`,
-      cancel_url: `${allowedOrigin}/`,
+      success_url: `${frontendURL}/success.html`,
+      cancel_url: `${frontendURL}/`,
     });
 
     res.json({ url: session.url });
