@@ -5,23 +5,23 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
-// ✅ CORS configuration — clean and correct
-const allowedOrigin = 'https://toronto-threads-site.onrender.com';
+// ✅ CORS configuration to allow frontend
+const allowedOrigin = 'https://toronto-threads-site-webservice.onrender.com';
 
 app.use(cors({
   origin: allowedOrigin,
-  credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
 }));
 
-// ✅ JSON body parsing
 app.use(express.json());
 
-// ✅ Health check route for Render
+// ✅ Health check route
 app.get('/', (req, res) => {
   res.send('Backend is live!');
 });
 
-// ✅ Stripe checkout session route
+// ✅ Stripe checkout session
 app.post('/create-checkout-session', async (req, res) => {
   try {
     const line_items = req.body.cart.map(item => ({
@@ -37,8 +37,8 @@ app.post('/create-checkout-session', async (req, res) => {
       payment_method_types: ['card'],
       line_items,
       mode: 'payment',
-      success_url: 'https://toronto-threads-site.onrender.com/success.html',
-      cancel_url: 'https://toronto-threads-site.onrender.com/',
+      success_url: `${allowedOrigin}/success.html`,
+      cancel_url: `${allowedOrigin}/`,
     });
 
     res.json({ url: session.url });
